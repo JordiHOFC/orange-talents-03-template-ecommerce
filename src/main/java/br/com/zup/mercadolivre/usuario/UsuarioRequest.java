@@ -1,5 +1,6 @@
 package br.com.zup.mercadolivre.usuario;
 
+import br.com.zup.mercadolivre.validator.ExisteEmail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 public class UsuarioRequest {
     @JsonProperty("login")
     @NotBlank
+    @ExisteEmail
     @Email(message = "O login deve estar no formato de email")
     private String login;
     @JsonProperty("senha")
