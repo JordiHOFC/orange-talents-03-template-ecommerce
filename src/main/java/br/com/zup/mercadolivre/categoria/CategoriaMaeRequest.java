@@ -17,7 +17,7 @@ public class CategoriaMaeRequest {
 
     public CategoriaMaeRequest() {
     }
-    
+
 
     public Long getId() {
         return id;
