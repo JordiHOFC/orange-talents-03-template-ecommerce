@@ -32,7 +32,7 @@ public class Produto {
     private Integer quantidade;
     @ManyToOne
     private Categoria categoria;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Caracteristica>caracteristicas=new ArrayList<>();
 
     public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas) {

@@ -5,6 +5,7 @@ import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
 import br.com.zup.mercadolivre.produto.caracteristicas.CaracteristicaRequest;
 import br.com.zup.mercadolivre.validator.ExistRegister;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -26,6 +27,7 @@ public class ProdutoRequest {
     private Integer quantidade;
     @Size(min = 3)
     @Valid
+    @UniqueElements
     List<CaracteristicaRequest>caracteristicas;
 
     @Length(min = 1000)
@@ -45,5 +47,9 @@ public class ProdutoRequest {
     public Produto toModelo(){
         Categoria categorias=new Categoria(categoria);
         return new Produto(nome,valor,descricao,quantidade,categorias,caracteristicas.stream().map(CaracteristicaRequest::toModelo).collect(Collectors.toList()));
+    }
+
+    public List<CaracteristicaRequest> getCaracteristicas() {
+        return caracteristicas;
     }
 }
