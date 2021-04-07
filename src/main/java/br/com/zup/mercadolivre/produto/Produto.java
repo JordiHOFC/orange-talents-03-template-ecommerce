@@ -2,17 +2,14 @@ package br.com.zup.mercadolivre.produto;
 
 import br.com.zup.mercadolivre.categoria.Categoria;
 import br.com.zup.mercadolivre.imagem.Imagem;
+import br.com.zup.mercadolivre.opiniao.Opiniao;
 import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
 import br.com.zup.mercadolivre.usuario.Usuario;
-import com.sun.istack.Nullable;
 import org.hibernate.annotations.Type;
-import org.springframework.data.util.Pair;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import javax.persistence.*;
 import javax.validation.constraints.PastOrPresent;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +48,9 @@ public class Produto {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Imagem> imagems=new ArrayList<>();
 
+    @OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
+    private List<Opiniao> opinoes= new ArrayList<>();
+
     public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas) {
         this.nome = nome;
         this.valor = valor;
@@ -64,23 +64,30 @@ public class Produto {
     public Produto() {
     }
 
+    public Produto(Long id) {
+        this.id = id;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
 
-    public List<Imagem> getImagems() {
-        return imagems;
-    }
-
     public String getNome() {
         return nome;
+    }
+    public void adicionarImagem(List<Imagem> imagems){
+        this.imagems.addAll(imagems);
+    }
+    public void adicionarOpiniao(Opiniao opiniao){
+        this.opinoes.add(opiniao);
+    }
+    public List<Imagem> getImagems() {
+        return imagems;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public List<Caracteristica> getCaracteristicas() {
-        return caracteristicas;
-    }
+
 }
