@@ -12,7 +12,7 @@ public class Imagem {
     private Long id;
     private String nome;
     private String url;
-   
+
 
     public Imagem(String nome, String url) {
         this.nome = nome;

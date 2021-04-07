@@ -65,7 +65,7 @@ public class ProdutoController {
         if (produto.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Este Produto não existe");
         }
-        Opiniao opiniao=opiniaoRequest.toModelo(idProduto,logado);
+        Opiniao opiniao=opiniaoRequest.toModelo(produto.get(),logado);
         produto.get().adicionarOpiniao(opiniao);
         return ResponseEntity.ok().build();
     }

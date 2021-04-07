@@ -27,8 +27,7 @@ public class OpiniaoRequest {
         this.nota = nota;
 
     }
-    public Opiniao toModelo(@ExistRegister(domainClass = Produto.class) Long idProduto, Usuario usuario){
-        Produto novoProduto=new Produto(idProduto);
-        return new Opiniao(titulo,descricao,nota,novoProduto,usuario);
+    public Opiniao toModelo(@ExistRegister(domainClass = Produto.class) Produto produto, Usuario usuario){
+        return new Opiniao(titulo,descricao,nota,produto,usuario);
     }
 }
