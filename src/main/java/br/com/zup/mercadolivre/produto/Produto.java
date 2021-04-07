@@ -75,6 +75,7 @@ public class Produto {
     public String getNome() {
         return nome;
     }
+
     public void adicionarImagem(List<Imagem> imagems){
         this.imagems.addAll(imagems);
     }

@@ -52,7 +52,7 @@ public class ProdutoController {
         if(!logado.getUsername().equals(donoProduto.getUsername())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Este produto não pertence ao usuario que esta em sessão.");
         }
-        possivelProduto.get().getImagems().addAll(imagensRequest.getImagens());
+        possivelProduto.get().adicionarImagem(imagensRequest.getImagens());
         return ResponseEntity.ok(imagensRequest.getImagens().stream().map( i-> new ImageResponse(possivelProduto.get().getNome(),i.getNome(),i.getUrl())).collect(Collectors.toList()));
     }
 
