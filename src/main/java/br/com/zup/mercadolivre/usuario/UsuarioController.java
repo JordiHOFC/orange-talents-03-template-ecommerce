@@ -2,6 +2,7 @@ package br.com.zup.mercadolivre.usuario;
 
 import feign.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,4 +26,6 @@ public class UsuarioController {
         repository.save(usuario);
         return ResponseEntity.ok().build();
     }
+
+
 }

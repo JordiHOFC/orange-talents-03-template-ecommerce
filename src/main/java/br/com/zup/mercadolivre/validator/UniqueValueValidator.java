@@ -20,6 +20,7 @@ public class UniqueValueValidator implements ConstraintValidator<UniqueValue,Obj
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
+
         String jpql="select 1 from "+domainClass.getSimpleName()+" r where "+domainAtribute+" =:register";
         Query query= manager.createQuery(jpql);
         query.setParameter("register",o);

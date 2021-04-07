@@ -1,7 +1,9 @@
 package br.com.zup.mercadolivre.produto;
 
 import br.com.zup.mercadolivre.categoria.Categoria;
+import br.com.zup.mercadolivre.imagem.Imagem;
 import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
+import br.com.zup.mercadolivre.usuario.Usuario;
 import com.sun.istack.Nullable;
 import org.hibernate.annotations.Type;
 import org.springframework.data.util.Pair;
@@ -17,23 +19,37 @@ import java.util.List;
 
 @Entity
 public class Produto {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String nome;
+
     @Column(nullable = false)
     private BigDecimal valor;
+
     @Type(type = "materialized_nclob")
     @Column(nullable = false)
     private String descricao;
+
     @PastOrPresent
     private LocalDateTime criadoEm;
+
     @Column(nullable = false)
     private Integer quantidade;
+
     @ManyToOne
     private Categoria categoria;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Caracteristica>caracteristicas=new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Usuario usuario;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Imagem> imagems=new ArrayList<>();
 
     public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas) {
         this.nome = nome;
@@ -46,5 +62,25 @@ public class Produto {
     }
 
     public Produto() {
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public List<Imagem> getImagems() {
+        return imagems;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public List<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
     }
 }
