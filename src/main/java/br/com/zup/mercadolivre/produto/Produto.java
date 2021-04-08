@@ -3,6 +3,7 @@ package br.com.zup.mercadolivre.produto;
 import br.com.zup.mercadolivre.categoria.Categoria;
 import br.com.zup.mercadolivre.imagem.Imagem;
 import br.com.zup.mercadolivre.opiniao.Opiniao;
+import br.com.zup.mercadolivre.pergunta.Pergunta;
 import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import org.hibernate.annotations.Type;
@@ -51,6 +52,9 @@ public class Produto {
     @OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
     private List<Opiniao> opinoes= new ArrayList<>();
 
+    @OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
+    private List<Pergunta> perguntas= new ArrayList<>();
+
     public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas) {
         this.nome = nome;
         this.valor = valor;
@@ -82,6 +86,8 @@ public class Produto {
     public void adicionarOpiniao(Opiniao opiniao){
         this.opinoes.add(opiniao);
     }
+    public void adicionarPergunta(Pergunta pergunta){this.perguntas.add(pergunta);}
+
     public List<Imagem> getImagems() {
         return imagems;
     }
