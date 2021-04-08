@@ -1,5 +1,6 @@
 package br.com.zup.mercadolivre.imagem;
 
+import br.com.zup.mercadolivre.uploaderimageserver.UploaderImageServer;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class ImagensRequest {
     public void setImagens(List<MultipartFile> imagens) {
         this.imagens = imagens;
     }
-    public List<Imagem> getImagens(){
-        return imagens.stream().map(Imagem::new).collect(Collectors.toList());
+    public List<Imagem> getImagens(UploaderImageServer server){
+        return imagens.stream().map(i-> new Imagem(i.getOriginalFilename(),server.save(i))).collect(Collectors.toList());
     }
 }

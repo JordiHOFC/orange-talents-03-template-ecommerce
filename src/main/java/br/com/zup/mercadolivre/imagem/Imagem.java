@@ -22,13 +22,6 @@ public class Imagem {
     public Imagem() {
     }
 
-    public Imagem(MultipartFile multipartFile) {
-        this.nome = multipartFile.getOriginalFilename();
-        this.url ="imageBB.i/"+multipartFile.getOriginalFilename();
-
-
-    }
-
     public String getNome() {
         return nome;
     }
