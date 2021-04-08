@@ -55,7 +55,7 @@ public class Produto {
     @OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
     private List<Pergunta> perguntas= new ArrayList<>();
 
-    public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas) {
+    public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas, Usuario usuario) {
         this.nome = nome;
         this.valor = valor;
         this.quantidade=quantidade;
@@ -63,6 +63,7 @@ public class Produto {
         this.criadoEm = LocalDateTime.now();
         this.categoria = categoria;
         this.caracteristicas = caracteristicas;
+        this.usuario=usuario;
     }
 
     public Produto() {
@@ -87,9 +88,6 @@ public class Produto {
         this.opinoes.add(opiniao);
     }
     public void adicionarPergunta(Pergunta pergunta){this.perguntas.add(pergunta);}
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 
     public BigDecimal getValor() {
         return valor;

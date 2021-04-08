@@ -15,6 +15,7 @@ import br.com.zup.mercadolivre.uploaderimageserver.UploaderImageServer;
 import br.com.zup.mercadolivre.usuario.Usuario;
 
 import br.com.zup.mercadolivre.validator.ExistRegister;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,13 +34,9 @@ import java.util.stream.Collectors;
 public class ProdutoController {
 
     private final ProdutoRepository repository;
-    private final EmailServer emailServer;
-    private final UploaderImageServer uploaderImageServer;
 
-    public ProdutoController(ProdutoRepository repository, EmailServer emailServer, UploaderImageServer uploaderImageServer) {
+    public ProdutoController(ProdutoRepository repository) {
         this.repository = repository;
-        this.emailServer = emailServer;
-        this.uploaderImageServer = uploaderImageServer;
     }
 
     @GetMapping("/{idProduto}")
@@ -58,8 +55,7 @@ public class ProdutoController {
     @PostMapping
     public ResponseEntity<?> cadastrarProduto(@RequestBody @Valid ProdutoRequest produtoRequest, @AuthenticationPrincipal
             Usuario logado){
-        Produto produto= produtoRequest.toModelo();
-        produto.setUsuario(logado);
+        Produto produto= produtoRequest.toModelo(logado);
         repository.save(produto);
         return ResponseEntity.ok().build();
     }
@@ -67,7 +63,7 @@ public class ProdutoController {
     @PostMapping("/{idProduto}/imagens")
     @Transactional
     public ResponseEntity<?> cadastrarImagensNoProduto(@Valid ImagensRequest imagensRequest, @PathVariable Long idProduto, @AuthenticationPrincipal
-            Usuario logado){
+            Usuario logado, @Autowired UploaderImageServer uploaderImageServer){
 
         Optional<Produto> possivelProduto=repository.findById(idProduto);
         if (possivelProduto.isEmpty()){
@@ -98,7 +94,7 @@ public class ProdutoController {
     }
     @PostMapping("/{idProduto}/perguntas")
     @Transactional
-    public ResponseEntity<?> cadastrarPergunta(@RequestBody @Valid PerguntaRequest perguntaRequest, @PathVariable  @ExistRegister(domainClass = Produto.class) Long idProduto, @AuthenticationPrincipal Usuario logado){
+    public ResponseEntity<?> cadastrarPergunta(@RequestBody @Valid PerguntaRequest perguntaRequest, @PathVariable  @ExistRegister(domainClass = Produto.class) Long idProduto, @AuthenticationPrincipal Usuario logado, @Autowired EmailServer emailServer){
 
         Optional<Produto> produto=repository.findById(idProduto);
         if (produto.isEmpty()){

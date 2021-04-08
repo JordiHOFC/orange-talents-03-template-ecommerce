@@ -3,6 +3,7 @@ package br.com.zup.mercadolivre.produto;
 import br.com.zup.mercadolivre.categoria.Categoria;
 import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
 import br.com.zup.mercadolivre.produto.caracteristicas.CaracteristicaRequest;
+import br.com.zup.mercadolivre.usuario.Usuario;
 import br.com.zup.mercadolivre.validator.ExistRegister;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
@@ -44,9 +45,9 @@ public class ProdutoRequest {
         this.descricao = descricao;
         this.categoria = categoria;
     }
-    public Produto toModelo(){
+    public Produto toModelo(Usuario usuario){
         Categoria categorias=new Categoria(categoria);
-        return new Produto(nome,valor,descricao,quantidade,categorias,caracteristicas.stream().map(CaracteristicaRequest::toModelo).collect(Collectors.toList()));
+        return new Produto(nome,valor,descricao,quantidade,categorias,caracteristicas.stream().map(CaracteristicaRequest::toModelo).collect(Collectors.toList()),usuario);
     }
 
     public List<CaracteristicaRequest> getCaracteristicas() {
