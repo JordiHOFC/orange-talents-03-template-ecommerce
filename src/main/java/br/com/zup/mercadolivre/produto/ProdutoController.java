@@ -1,6 +1,7 @@
 package br.com.zup.mercadolivre.produto;
 
 
+import br.com.zup.mercadolivre.emailserver.EmailServer;
 import br.com.zup.mercadolivre.imagem.ImageResponse;
 
 import br.com.zup.mercadolivre.imagem.Imagem;
@@ -12,6 +13,7 @@ import br.com.zup.mercadolivre.pergunta.PerguntaRequest;
 import br.com.zup.mercadolivre.uploaderimageserver.UploaderImageServer;
 import br.com.zup.mercadolivre.usuario.Usuario;
 
+import br.com.zup.mercadolivre.validator.ExistRegister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -30,10 +32,12 @@ import java.util.stream.Collectors;
 public class ProdutoController {
 
     private final ProdutoRepository repository;
+    private final EmailServer emailServer;
     private final UploaderImageServer uploaderImageServer;
 
-    public ProdutoController(ProdutoRepository repository, UploaderImageServer uploaderImageServer) {
+    public ProdutoController(ProdutoRepository repository, EmailServer emailServer, UploaderImageServer uploaderImageServer) {
         this.repository = repository;
+        this.emailServer = emailServer;
         this.uploaderImageServer = uploaderImageServer;
     }
 
@@ -78,5 +82,17 @@ public class ProdutoController {
         produto.get().adicionarOpiniao(opiniao);
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/{idProduto}/perguntas")
+    @Transactional
+    public ResponseEntity<?> cadastrarPergunta(@RequestBody @Valid PerguntaRequest perguntaRequest, @PathVariable  @ExistRegister(domainClass = Produto.class) Long idProduto, @AuthenticationPrincipal Usuario logado){
 
+        Optional<Produto> produto=repository.findById(idProduto);
+        if (produto.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Este produto não existe");
+        }
+        Pergunta pergunta= perguntaRequest.toModelo(produto.get(),logado);
+        produto.get().adicionarPergunta(pergunta);
+        emailServer.send(produto.get().getUsuario(),perguntaRequest.getTitulo(),logado,produto.get().getNome());
+        return ResponseEntity.ok().build();
+    }
 }
