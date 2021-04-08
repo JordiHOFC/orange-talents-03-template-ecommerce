@@ -1,12 +1,10 @@
 package br.com.zup.mercadolivre.usuario;
 
-import br.com.zup.mercadolivre.usuario.perfil.Perfil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

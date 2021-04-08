@@ -1,5 +1,6 @@
-package br.com.zup.mercadolivre.produto.caracteristicas;
+package br.com.zup.mercadolivre.produto;
 
+import br.com.zup.mercadolivre.produto.Caracteristica;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CaracteristicasResponse {

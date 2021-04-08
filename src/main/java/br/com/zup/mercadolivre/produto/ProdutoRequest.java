@@ -1,8 +1,6 @@
 package br.com.zup.mercadolivre.produto;
 
 import br.com.zup.mercadolivre.categoria.Categoria;
-import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
-import br.com.zup.mercadolivre.produto.caracteristicas.CaracteristicaRequest;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import br.com.zup.mercadolivre.validator.ExistRegister;
 import org.hibernate.validator.constraints.Length;

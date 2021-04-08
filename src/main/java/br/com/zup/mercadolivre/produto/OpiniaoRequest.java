@@ -1,5 +1,6 @@
-package br.com.zup.mercadolivre.opiniao;
+package br.com.zup.mercadolivre.produto;
 
+import br.com.zup.mercadolivre.produto.Opiniao;
 import br.com.zup.mercadolivre.produto.Produto;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import br.com.zup.mercadolivre.validator.ExistRegister;

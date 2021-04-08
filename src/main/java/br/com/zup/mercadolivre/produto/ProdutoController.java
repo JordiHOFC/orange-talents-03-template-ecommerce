@@ -6,11 +6,6 @@ import br.com.zup.mercadolivre.imagem.ImageResponse;
 
 import br.com.zup.mercadolivre.imagem.Imagem;
 import br.com.zup.mercadolivre.imagem.ImagensRequest;
-import br.com.zup.mercadolivre.opiniao.Opiniao;
-import br.com.zup.mercadolivre.opiniao.OpiniaoRequest;
-import br.com.zup.mercadolivre.pergunta.Pergunta;
-import br.com.zup.mercadolivre.pergunta.PerguntaRequest;
-import br.com.zup.mercadolivre.produto.caracteristicas.ProdutoDetalhadoResponse;
 import br.com.zup.mercadolivre.uploaderimageserver.UploaderImageServer;
 import br.com.zup.mercadolivre.usuario.Usuario;
 

@@ -1,5 +1,6 @@
-package br.com.zup.mercadolivre.pergunta;
+package br.com.zup.mercadolivre.produto;
 
+import br.com.zup.mercadolivre.produto.Pergunta;
 import br.com.zup.mercadolivre.produto.Produto;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import com.fasterxml.jackson.annotation.JsonProperty;

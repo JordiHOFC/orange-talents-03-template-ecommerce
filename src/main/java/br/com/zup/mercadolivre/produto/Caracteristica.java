@@ -1,4 +1,4 @@
-package br.com.zup.mercadolivre.produto.caracteristicas;
+package br.com.zup.mercadolivre.produto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

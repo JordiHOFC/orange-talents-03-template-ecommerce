@@ -1,4 +1,4 @@
-package br.com.zup.mercadolivre.pergunta;
+package br.com.zup.mercadolivre.produto;
 
 import br.com.zup.mercadolivre.produto.Produto;
 import br.com.zup.mercadolivre.usuario.Usuario;

@@ -1,11 +1,8 @@
 package br.com.zup.mercadolivre.emailserver;
 
-import br.com.zup.mercadolivre.pergunta.PerguntaRequest;
-import br.com.zup.mercadolivre.produto.Produto;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 @Component
 public class EmailServerImpl implements EmailServer{
     @Override

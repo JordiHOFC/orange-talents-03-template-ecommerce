@@ -1,9 +1,6 @@
-package br.com.zup.mercadolivre.produto.caracteristicas;
+package br.com.zup.mercadolivre.produto;
 
 import br.com.zup.mercadolivre.imagem.Imagem;
-import br.com.zup.mercadolivre.opiniao.OpiniaoResponse;
-import br.com.zup.mercadolivre.pergunta.PerguntaResponse;
-import br.com.zup.mercadolivre.produto.Produto;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

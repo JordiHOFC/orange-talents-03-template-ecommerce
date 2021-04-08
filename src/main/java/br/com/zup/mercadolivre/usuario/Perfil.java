@@ -1,4 +1,4 @@
-package br.com.zup.mercadolivre.usuario.perfil;
+package br.com.zup.mercadolivre.usuario;
 
 import org.springframework.security.core.GrantedAuthority;
 

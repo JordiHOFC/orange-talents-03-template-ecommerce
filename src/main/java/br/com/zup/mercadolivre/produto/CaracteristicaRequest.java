@@ -1,9 +1,4 @@
-package br.com.zup.mercadolivre.produto.caracteristicas;
-
-import br.com.zup.mercadolivre.categoria.Categoria;
-import br.com.zup.mercadolivre.produto.caracteristicas.Caracteristica;
-import br.com.zup.mercadolivre.validator.UniqueValue;
-import org.hibernate.validator.constraints.UniqueElements;
+package br.com.zup.mercadolivre.produto;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
