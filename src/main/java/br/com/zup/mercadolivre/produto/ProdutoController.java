@@ -10,6 +10,7 @@ import br.com.zup.mercadolivre.opiniao.Opiniao;
 import br.com.zup.mercadolivre.opiniao.OpiniaoRequest;
 import br.com.zup.mercadolivre.pergunta.Pergunta;
 import br.com.zup.mercadolivre.pergunta.PerguntaRequest;
+import br.com.zup.mercadolivre.produto.caracteristicas.ProdutoDetalhadoResponse;
 import br.com.zup.mercadolivre.uploaderimageserver.UploaderImageServer;
 import br.com.zup.mercadolivre.usuario.Usuario;
 
@@ -41,6 +42,19 @@ public class ProdutoController {
         this.uploaderImageServer = uploaderImageServer;
     }
 
+    @GetMapping("/{idProduto}")
+    public ResponseEntity<ProdutoDetalhadoResponse> detalharProduto(@PathVariable Long idProduto){
+        Optional<Produto> produto=repository.findById(idProduto);
+        if(produto.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Integer quantidadeAvaliacoes=repository.countOpiniaoByProdutoId(idProduto);
+        Double media= repository.findByAverageNotaInProduct(idProduto);
+        ProdutoDetalhadoResponse detalhadoResponse=new ProdutoDetalhadoResponse(produto.get(),quantidadeAvaliacoes,media);
+        return ResponseEntity.ok(detalhadoResponse);
+
+    }
+
     @PostMapping
     public ResponseEntity<?> cadastrarProduto(@RequestBody @Valid ProdutoRequest produtoRequest, @AuthenticationPrincipal
             Usuario logado){
@@ -50,7 +64,7 @@ public class ProdutoController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{idProduto}/imagens")
+    @PostMapping("/{idProduto}/imagens")
     @Transactional
     public ResponseEntity<?> cadastrarImagensNoProduto(@Valid ImagensRequest imagensRequest, @PathVariable Long idProduto, @AuthenticationPrincipal
             Usuario logado){
@@ -69,7 +83,7 @@ public class ProdutoController {
         return ResponseEntity.ok(novasImagens.stream().map(ImageResponse::new).collect(Collectors.toList()));
     }
 
-    @PatchMapping("/{idProduto}/opinioes")
+    @PostMapping("/{idProduto}/opinioes")
     @Transactional
     public ResponseEntity<?> cadastrarOpiniao(@RequestBody @Valid OpiniaoRequest opiniaoRequest, @PathVariable Long idProduto, @AuthenticationPrincipal Usuario logado){
 

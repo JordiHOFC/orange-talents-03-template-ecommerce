@@ -87,14 +87,39 @@ public class Produto {
         this.opinoes.add(opiniao);
     }
     public void adicionarPergunta(Pergunta pergunta){this.perguntas.add(pergunta);}
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public List<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
+    }
 
     public List<Imagem> getImagems() {
         return imagems;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public List<Opiniao> getOpinoes() {
+        return opinoes;
     }
 
-
+    public List<Pergunta> getPerguntas() {
+        return perguntas;
+    }
 }

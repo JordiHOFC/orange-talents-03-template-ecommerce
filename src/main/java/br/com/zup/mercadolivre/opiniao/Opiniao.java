@@ -43,6 +43,12 @@ public class Opiniao {
     public Opiniao() {
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
 
+    public String getDescricao() {
+        return descricao;
+    }
 
 }

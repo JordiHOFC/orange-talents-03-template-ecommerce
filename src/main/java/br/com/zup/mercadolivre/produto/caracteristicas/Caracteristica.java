@@ -17,6 +17,9 @@ public class Caracteristica {
         this.descricao = descricao;
     }
 
+    public Caracteristica() {
+    }
+
     public String getNome() {
         return nome;
     }
