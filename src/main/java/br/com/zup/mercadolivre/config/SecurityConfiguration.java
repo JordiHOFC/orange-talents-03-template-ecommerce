@@ -1,12 +1,10 @@
 package br.com.zup.mercadolivre.config;
 
-import br.com.zup.mercadolivre.config.services.UserDetailsServiceImpl;
-import br.com.zup.mercadolivre.config.services.token.AuthenticationToken;
-import br.com.zup.mercadolivre.config.services.token.TokenService;
+import br.com.zup.mercadolivre.config.token.AuthenticationToken;
+import br.com.zup.mercadolivre.config.token.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

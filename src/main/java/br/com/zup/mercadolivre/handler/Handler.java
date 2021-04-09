@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import  org.springframework.validation.BindException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +15,11 @@ public class Handler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> MethodArgumentNotValid(MethodArgumentNotValidException e){
+        List<Errors>erros=e.getFieldErrors().stream().map(Errors::new).collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(erros);
+    }
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<?> BindException(BindException e){
         List<Errors>erros=e.getFieldErrors().stream().map(Errors::new).collect(Collectors.toList());
         return ResponseEntity.badRequest().body(erros);
     }

@@ -1,6 +1,7 @@
 package br.com.zup.mercadolivre.produto;
 
 import br.com.zup.mercadolivre.categoria.Categoria;
+import br.com.zup.mercadolivre.compra.Compra;
 import br.com.zup.mercadolivre.imagem.Imagem;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import org.hibernate.annotations.Type;
@@ -52,6 +53,9 @@ public class Produto {
     @OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
     private List<Pergunta> perguntas= new ArrayList<>();
 
+    @OneToMany(mappedBy = "produto",cascade = CascadeType.ALL)
+    private List<Compra> vendas=new ArrayList<>();
+
     public Produto(String nome, BigDecimal valor, String descricao, Integer quantidade, Categoria categoria, List<Caracteristica> caracteristicas, Usuario usuario) {
         this.nome = nome;
         this.valor = valor;
@@ -77,14 +81,6 @@ public class Produto {
     public String getNome() {
         return nome;
     }
-
-    public void adicionarImagem(List<Imagem> imagems){
-        this.imagems.addAll(imagems);
-    }
-    public void adicionarOpiniao(Opiniao opiniao){
-        this.opinoes.add(opiniao);
-    }
-    public void adicionarPergunta(Pergunta pergunta){this.perguntas.add(pergunta);}
 
     public BigDecimal getValor() {
         return valor;
@@ -116,5 +112,20 @@ public class Produto {
 
     public List<Pergunta> getPerguntas() {
         return perguntas;
+    }
+
+    public void adicionarImagem(List<Imagem> imagems){
+        this.imagems.addAll(imagems);
+    }
+
+    public void adicionarOpiniao(Opiniao opiniao){
+        this.opinoes.add(opiniao);
+    }
+
+    public void adicionarPergunta(Pergunta pergunta){this.perguntas.add(pergunta);}
+
+    public void adicionarVenda(Compra compra, Integer quantidade){
+        this.quantidade-=quantidade;
+        this.vendas.add(compra);
     }
 }

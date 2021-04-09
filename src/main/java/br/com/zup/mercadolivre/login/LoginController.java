@@ -1,6 +1,6 @@
 package br.com.zup.mercadolivre.login;
 
-import br.com.zup.mercadolivre.config.services.token.TokenService;
+import br.com.zup.mercadolivre.config.token.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

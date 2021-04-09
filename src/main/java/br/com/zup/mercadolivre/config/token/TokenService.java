@@ -1,4 +1,4 @@
-package br.com.zup.mercadolivre.config.services.token;
+package br.com.zup.mercadolivre.config.token;
 
 import br.com.zup.mercadolivre.usuario.Usuario;
 import br.com.zup.mercadolivre.usuario.UsuarioRepository;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.Date;
 
 @Service

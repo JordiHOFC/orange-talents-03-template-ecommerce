@@ -13,6 +13,11 @@ public class Errors {
         this.erro= fieldError.getDefaultMessage();
     }
 
+    public Errors(String campo, String erro) {
+        this.campo = campo;
+        this.erro = erro;
+    }
+
     public String getCampo() {
         return campo;
     }

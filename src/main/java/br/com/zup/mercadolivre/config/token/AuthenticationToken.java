@@ -1,4 +1,4 @@
-package br.com.zup.mercadolivre.config.services.token;
+package br.com.zup.mercadolivre.config.token;
 
 import br.com.zup.mercadolivre.usuario.Usuario;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package br.com.zup.mercadolivre.config.services;
+package br.com.zup.mercadolivre.config;
 
 import br.com.zup.mercadolivre.usuario.Usuario;
 import br.com.zup.mercadolivre.usuario.UsuarioRepository;
