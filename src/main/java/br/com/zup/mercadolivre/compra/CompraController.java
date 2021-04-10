@@ -1,17 +1,23 @@
 package br.com.zup.mercadolivre.compra;
 
+import br.com.zup.mercadolivre.config.token.TokenService;
 import br.com.zup.mercadolivre.emailserver.EmailServerImpl;
 import br.com.zup.mercadolivre.handler.Errors;
 import br.com.zup.mercadolivre.produto.Produto;
 import br.com.zup.mercadolivre.produto.ProdutoRepository;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -22,8 +28,10 @@ import java.util.Optional;
 public class CompraController {
     private final ProdutoRepository repository;
 
+
     public CompraController(ProdutoRepository repository) {
         this.repository = repository;
+
     }
 
     @PostMapping("/{idProduto}/compras")
@@ -44,12 +52,7 @@ public class CompraController {
         server.send(vendedor,"Processo de compra iniciado",comprador,produto.get().getNome(),"Compra");
 
         produto.get().adicionarVenda(compra, compraRequest.getQuantidade());
-
-        URI uri=uriComponentsBuilder.path(compraRequest.getMetodoPagamento()+".com\\?buyerId={id}&redirectUrl={localhost:8080\\/auth}").buildAndExpand(compra.getId()).toUri();
-
+        URI uri=uriComponentsBuilder.port(8080).path(compraRequest.getMetodoPagamento()+".com\\?buyerId={id}&redirectUrl={localhost:8080\\/auth}").buildAndExpand(compra.getId()).toUri();
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).location(uri).build();
-
-
-
     }
 }
