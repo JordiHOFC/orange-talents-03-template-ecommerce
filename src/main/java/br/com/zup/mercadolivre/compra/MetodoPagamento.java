@@ -1,16 +1,23 @@
 package br.com.zup.mercadolivre.compra;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.Map;
+
 public enum MetodoPagamento{
-    PAYPAL("paypal"),
-    PAGSEGURO("pagseguro");
+    paypal{
+        @Override
+       public URI criaUrlRetorno(Compra compra) {
+            return UriComponentsBuilder.fromUriString("/return-paypal/{id}").port(8080).buildAndExpand(Map.of("id", compra.getId())).encode().toUri();
+        }
+    },
+    pagseguro{
+        @Override
+      public  URI criaUrlRetorno(Compra compra) {
+            return UriComponentsBuilder.fromUriString("/return-pagseguro/{id}").port(8080).buildAndExpand(Map.of("id", compra.getId())).encode().toUri();
+        }
+    };
 
-    private String gatway;
-
-    MetodoPagamento(String gatway) {
-        this.gatway=gatway;
-    }
-
-    public String getGatway() {
-        return gatway;
-    }
+    public abstract URI criaUrlRetorno(Compra compra);
 }

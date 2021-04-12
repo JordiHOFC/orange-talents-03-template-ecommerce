@@ -124,8 +124,12 @@ public class Produto {
 
     public void adicionarPergunta(Pergunta pergunta){this.perguntas.add(pergunta);}
 
-    public void adicionarVenda(Compra compra, Integer quantidade){
-        this.quantidade-=quantidade;
-        this.vendas.add(compra);
+    public boolean adicionarVenda(Compra compra, Integer quantidadeASerComprada){
+        if(quantidadeASerComprada<=this.quantidade){
+            this.quantidade-=quantidadeASerComprada;
+            this.vendas.add(compra);
+            return true;
+        }
+        return false;
     }
 }

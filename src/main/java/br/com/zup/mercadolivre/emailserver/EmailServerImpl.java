@@ -11,8 +11,8 @@ public class EmailServerImpl implements EmailServer{
     public void send(Usuario destinatario, String corpo, Usuario interessado, String produto,String assunto) {
         String Email="\nRemetente: compras@mercadolivre.com"+
         " \n Destinatario: "+destinatario.getUsername()+
-        "\n Assunto: "+assunto+": "+ produto+"\n "+
-        "Pergunta: "+ corpo+"\n";
+        "\n Assunto: "+ produto+"\n "+
+         assunto+": "+ corpo+"\n";
         System.out.println(Email);
     }
 

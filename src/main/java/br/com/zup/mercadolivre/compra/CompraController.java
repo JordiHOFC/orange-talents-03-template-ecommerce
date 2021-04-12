@@ -7,52 +7,53 @@ import br.com.zup.mercadolivre.produto.Produto;
 import br.com.zup.mercadolivre.produto.ProdutoRepository;
 import br.com.zup.mercadolivre.usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.net.URI;
+import java.net.http.HttpHeaders;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/compras")
 public class CompraController {
     private final ProdutoRepository repository;
-
+    @PersistenceContext private EntityManager entityManager;
 
     public CompraController(ProdutoRepository repository) {
         this.repository = repository;
-
     }
-
-    @PostMapping("/{idProduto}/compras")
+    @PostMapping
     @Transactional
-    public ResponseEntity<?> cadastrarVendaDeProduto(@RequestBody @Valid CompraRequest compraRequest, @PathVariable Long idProduto, @AuthenticationPrincipal Usuario comprador, @Autowired EmailServerImpl server, UriComponentsBuilder uriComponentsBuilder){
-        Optional<Produto> produto=repository.findById(idProduto);
-        if (produto.isEmpty()){
+    public ResponseEntity<?> cadastrarVendaDeProduto(@RequestBody @Valid CompraRequest compraRequest, @AuthenticationPrincipal Usuario comprador, @Autowired EmailServerImpl server, UriComponentsBuilder uriComponentsBuilder){
+        Optional<Produto> possivelProduto=repository.findById(compraRequest.getIdProduto());
+        if (possivelProduto.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Errors("Produto","Produto não encontrado."));
         }
-        Integer quantidadeDisponivel=produto.get().getQuantidade();
-        if (compraRequest.getQuantidade()>quantidadeDisponivel){
+        Produto produto= possivelProduto.get();
+        Integer quantidadeDisponivel=possivelProduto.get().getQuantidade();
+        Usuario vendedor=possivelProduto.get().getUsuario();
+        Compra compra=compraRequest.toModelo(comprador);
+
+
+        if (!produto.adicionarVenda(compra, compraRequest.getQuantidade())){
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Errors("Quantidade","Quantidade indisponivel"));
         }
-        Usuario vendedor=produto.get().getUsuario();
-
-        Compra compra=compraRequest.toModelo(comprador, produto.get());
-
-        server.send(vendedor,"Processo de compra iniciado",comprador,produto.get().getNome(),"Compra");
-
-        produto.get().adicionarVenda(compra, compraRequest.getQuantidade());
-        URI uri=uriComponentsBuilder.port(8080).path(compraRequest.getMetodoPagamento()+".com\\?buyerId={id}&redirectUrl={localhost:8080\\/auth}").buildAndExpand(compra.getId()).toUri();
-        return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).location(uri).build();
+        entityManager.persist(compra);
+        server.send(vendedor,"Processo de compra iniciado",comprador,possivelProduto.get().getNome(),"Compra");
+        return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).location(compra.getMetodoPagamento().criaUrlRetorno(compra)).build();
     }
 }

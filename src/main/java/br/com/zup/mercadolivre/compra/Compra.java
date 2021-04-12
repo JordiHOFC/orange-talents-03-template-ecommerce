@@ -42,6 +42,10 @@ public class Compra {
         return id;
     }
 
+    public MetodoPagamento getMetodoPagamento() {
+        return metodoPagamento;
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }
