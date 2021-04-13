@@ -23,8 +23,8 @@ public class CompraRequest {
     @JsonProperty("metodoPagamento")
     private String metodoPagamento;
 
-    public Compra toModelo(Usuario comprador){
-        Produto produto= new Produto(idProduto);
+    public Compra toModelo(Usuario comprador, Produto produto){
+
         MetodoPagamento pagamento=MetodoPagamento.valueOf(metodoPagamento);
         return new Compra(comprador,produto,produto.getValor(),quantidade,pagamento);
     }

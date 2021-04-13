@@ -38,6 +38,10 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.permissoes;

@@ -6,5 +6,6 @@ import br.com.zup.mercadolivre.usuario.Usuario;
 
 
 public interface EmailServer {
-    void send(Usuario destinatario, String corpo, Usuario interessado, String produto, String assunto);
+    String createMessageCompra(String produto, String valor, String metodoPagamento);
+    void send(Usuario destinatario, String corpo, String produto, String assunto);
 }

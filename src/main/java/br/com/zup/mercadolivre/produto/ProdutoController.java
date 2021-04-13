@@ -102,7 +102,7 @@ public class ProdutoController {
         }
         Pergunta pergunta= perguntaRequest.toModelo(produto.get(),logado);
         produto.get().adicionarPergunta(pergunta);
-        emailServer.send(produto.get().getUsuario(),perguntaRequest.getTitulo(),logado,produto.get().getNome(),"pergunta");
+        emailServer.send(produto.get().getUsuario(),perguntaRequest.getTitulo(),produto.get().getNome(),"pergunta");
         return ResponseEntity.ok().build();
     }
 }

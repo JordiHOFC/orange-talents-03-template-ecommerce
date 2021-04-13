@@ -45,15 +45,14 @@ public class CompraController {
         Produto produto= possivelProduto.get();
         Integer quantidadeDisponivel=possivelProduto.get().getQuantidade();
         Usuario vendedor=possivelProduto.get().getUsuario();
-        Compra compra=compraRequest.toModelo(comprador);
-
+        Compra compra=compraRequest.toModelo(comprador,produto);
 
         if (!produto.adicionarVenda(compra, compraRequest.getQuantidade())){
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Errors("Quantidade","Quantidade indisponivel"));
         }
         entityManager.persist(compra);
-        server.send(vendedor,"Processo de compra iniciado",comprador,possivelProduto.get().getNome(),"Compra");
+        server.send(vendedor,"Processo de compra iniciado",possivelProduto.get().getNome(),"Compra");
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).location(compra.getMetodoPagamento().criaUrlRetorno(compra)).build();
     }
 }

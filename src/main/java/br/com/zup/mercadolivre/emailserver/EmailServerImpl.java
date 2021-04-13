@@ -8,7 +8,12 @@ import org.springframework.stereotype.Service;
 @Component
 public class EmailServerImpl implements EmailServer{
     @Override
-    public void send(Usuario destinatario, String corpo, Usuario interessado, String produto,String assunto) {
+    public String createMessageCompra(String produto, String valor, String metodoPagamento) {
+      return  "Compra do produto: "+produto+" no valor de "+valor+" R$, foi processada com sucess! \n Metodo pagagamento: "+metodoPagamento;
+    }
+
+    @Override
+    public void send(Usuario destinatario, String corpo, String produto,String assunto) {
         String Email="\nRemetente: compras@mercadolivre.com"+
         " \n Destinatario: "+destinatario.getUsername()+
         "\n Assunto: "+ produto+"\n "+
