@@ -51,10 +51,8 @@ public class PagamentosController {
             pagamento.associarTransacao(novaTransacao);
             compra.finalizarCompra(Status.SUCESSO);
             clienteNotaFiscal.solicitaNF(compra.getComprador().getId(),compra.getId(),request.getHeader("Authorization"));
-            URI uriRankingVendedores = getUriNotaFiscal(compra, "/rankingvendedores/{idCompra}/{idUsuario}");
             rankingVendedores.atualizaRanking(compra.getProduto().getUsuario().getId(), compra.getId(),request.getHeader("Authorization"));
             Integer status=novaTransacao.getStatus().ordinal();
-
             return ResponseEntity.ok(UriComponentsBuilder.fromUriString("/pagamentos/compras/{idCompra}/{idTransacao}&status={status}").buildAndExpand(Map.of("idCompra",compra.getId(),"idTransacao", novaTransacao.getId(),"status",status.toString())).toUriString());
         }
 
@@ -67,10 +65,36 @@ public class PagamentosController {
             return ResponseEntity.ok(UriComponentsBuilder.fromUriString("/pagamentos/compras/{idCompra}/{idTransacao}&status={status}").buildAndExpand(Map.of("idCompra",compra.getId(),"idTransacao", transacao.getId(),"status",status.toString())).toUriString());
 
     }
+    @PostMapping("return-pagseguro/{idCompra}")
+    @Transactional
+    public ResponseEntity<?> retornoPagSeguro(@PathVariable Long idCompra, HttpServletRequest request) {
+        Compra compra = manager.find(Compra.class, idCompra);
+        Pagamento pagamento = new Pagamento(compra);
+        manager.persist(pagamento);
+        if (random.nextDouble() <= 0.7 && pagamento.pagamentoNaoConcluido()) {
+            Transacao novaTransacao = new Transacao(Status.SUCESSO, pagamento, compra);
+            manager.persist(novaTransacao);
+            BigDecimal quantidade = new BigDecimal(compra.getQuantidade().toString());
+            String msg = emailServer.createMessageCompra(compra.getProduto().getNome(), compra.getValor().multiply(quantidade).toString(), compra.getMetodoPagamento().name());
+            emailServer.send(compra.getComprador(), msg, compra.getProduto().getNome(), "Compra finalizada com sucesso!");
+            pagamento.associarTransacao(novaTransacao);
+            compra.finalizarCompra(Status.SUCESSO);
+            clienteNotaFiscal.solicitaNF(compra.getComprador().getId(),compra.getId(),request.getHeader("Authorization"));
+            rankingVendedores.atualizaRanking(compra.getProduto().getUsuario().getId(), compra.getId(),request.getHeader("Authorization"));
+            String status=novaTransacao.getStatus().name();
+            return ResponseEntity.ok(UriComponentsBuilder.fromUriString("/pagamentos/compras/{idCompra}/{idTransacao}&status={status}").buildAndExpand(Map.of("idCompra",compra.getId(),"idTransacao", novaTransacao.getId(),"status",status)).toUriString());
+        }
 
-    private URI getUriNotaFiscal(Compra compra, String s) {
-        return UriComponentsBuilder.fromUriString(s).
-                port(8080).buildAndExpand(Map.of("idCompra", compra.getId(), "idUsuario", compra.getComprador().getId())).toUri();
+        Transacao transacao = new Transacao(Status.ERRO, pagamento, compra);
+        manager.persist(transacao);
+        String uriTenteNovamente = UriComponentsBuilder.fromUriString("/return-novopagamento/{idCompra}/{idPagamento}").buildAndExpand(Map.of("idCompra", idCompra, "idPagamento", pagamento.getId())).toUriString();
+        String msg = "Pagamento não autorizado, para tentar novamente utilize este endereço:\n "+uriTenteNovamente;
+        emailServer.send(compra.getComprador(), msg, compra.getProduto().getNome(), "Pagamento Não autorizado");
+        String status=transacao.getStatus().name();
+        return ResponseEntity.ok(UriComponentsBuilder.fromUriString("/pagamentos/compras/{idCompra}/{idTransacao}&status={status}").buildAndExpand(Map.of("idCompra",compra.getId(),"idTransacao", transacao.getId(),"status",status)).toUriString());
+
     }
+
+
 
 }
