@@ -9,4 +9,15 @@ public class MensageReponse {
     public MensageReponse(String mensagem) {
         this.mensagem=mensagem;
     }
+
+    public MensageReponse() {
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
 }

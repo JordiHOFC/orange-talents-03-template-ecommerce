@@ -12,4 +12,11 @@ public class NotaFiscalResponse {
         this.comprador=notaFiscal.getComprador().getUsername();
     }
 
+    public String getNumero() {
+        return numero;
+    }
+
+    public String getComprador() {
+        return comprador;
+    }
 }

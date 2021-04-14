@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Transacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Status status;
     @ManyToOne
     private Pagamento pagamento;

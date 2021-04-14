@@ -2,12 +2,11 @@ package br.com.zup.mercadolivre.rankingvendas;
 
 import br.com.zup.mercadolivre.compra.Compra;
 import br.com.zup.mercadolivre.usuario.Usuario;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+@Entity
 public class Venda {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
