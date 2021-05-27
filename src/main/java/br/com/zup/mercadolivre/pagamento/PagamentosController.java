@@ -18,12 +18,12 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.net.URI;
 import java.util.Map;
 import java.util.Random;
 
 @RestController
 public class PagamentosController {
+
     @PersistenceContext
     private EntityManager manager;
     @Autowired
@@ -32,7 +32,6 @@ public class PagamentosController {
     private ClienteNotaFiscal clienteNotaFiscal;
     @Autowired
     private ClienteRankingVendedores rankingVendedores;
-
     private Random random = new Random();
 
 
@@ -42,6 +41,7 @@ public class PagamentosController {
         Compra compra = manager.find(Compra.class, idCompra);
         Pagamento pagamento = new Pagamento(compra);
         manager.persist(pagamento);
+
         if (random.nextDouble() <= 0.7 && pagamento.pagamentoNaoConcluido()) {
             Transacao novaTransacao = new Transacao(Status.SUCESSO, pagamento, compra);
             manager.persist(novaTransacao);
@@ -51,7 +51,7 @@ public class PagamentosController {
             pagamento.associarTransacao(novaTransacao);
             compra.finalizarCompra(Status.SUCESSO);
             clienteNotaFiscal.solicitaNF(compra.getComprador().getId(),compra.getId(),request.getHeader("Authorization"));
-            rankingVendedores.atualizaRanking(compra.getProduto().getUsuario().getId(), compra.getId(),request.getHeader("Authorization"));
+            MensageReponse response=rankingVendedores.atualizaRanking(compra.getProduto().getUsuario().getId(), compra.getId(),request.getHeader("Authorization"));
             Integer status=novaTransacao.getStatus().ordinal();
             return ResponseEntity.ok(UriComponentsBuilder.fromUriString("/pagamentos/compras/{idCompra}/{idTransacao}&status={status}").buildAndExpand(Map.of("idCompra",compra.getId(),"idTransacao", novaTransacao.getId(),"status",status.toString())).toUriString());
         }
@@ -71,6 +71,7 @@ public class PagamentosController {
         Compra compra = manager.find(Compra.class, idCompra);
         Pagamento pagamento = new Pagamento(compra);
         manager.persist(pagamento);
+
         if (random.nextDouble() <= 0.7 && pagamento.pagamentoNaoConcluido()) {
             Transacao novaTransacao = new Transacao(Status.SUCESSO, pagamento, compra);
             manager.persist(novaTransacao);

@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(requests-> {
             try {
-                requests.antMatchers("/auth")
+                requests.antMatchers("/auth","/actuator/**","/verify")
                 .permitAll().anyRequest().authenticated().and().csrf().
                 disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().addFilterBefore(new AuthenticationToken(tokenService), UsernamePasswordAuthenticationFilter.class);
